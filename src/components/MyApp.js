@@ -6,6 +6,7 @@ import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import ImagePopup from './ImagePopup';
+import { Link, useHistory } from 'react-router-dom';
 import AddPlacePopup from './AddPlacePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api';
@@ -19,6 +20,7 @@ function MyApp() {
     const [selectedCard, setSelectedCard] = React.useState({});
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([]);
+    const history = useHistory();
 
 
     function handleEditAvatarClick() {
@@ -92,6 +94,11 @@ function MyApp() {
             });
     }
 
+    function signOut() {
+        localStorage.removeItem('jwt');
+        history.push('/sign-in');
+    }
+
     React.useEffect(() => {
         api.getUserInfo()
             .then((item) => {
@@ -114,7 +121,13 @@ function MyApp() {
     return (
         <>
             <CurrentUserContext.Provider value={currentUser}>
-                <Header />
+                <Header>
+                    <div className="header__menu">
+                        <p className="header__email">sasha@mail.ru</p>
+                        <button onClick={signOut} className="header__link header__link_type_signout">Выйти</button>
+                    </div>
+
+                </Header>
                 <Main
                     onEditProfile={handleEditProfileClick}
                     onAddPlace={handleAddPlaceClick}
