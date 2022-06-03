@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
-import * as Auth from '../utils/Auth.js';
 
 function Register(props) {
     const [email, setEmail] = React.useState('');
@@ -9,13 +8,8 @@ function Register(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        Auth.register(password, email)
-            .then((res) => {
-                props.onSuccess(true);
-                console.log(res);
-            });
+        props.register(password, email);
     }
-
 
     return (
         <>
@@ -44,7 +38,6 @@ function Register(props) {
                 <Link to="/sign-in" className="form__link">Уже зарегистрированы? Войти</Link>
             </form>
         </>
-
     );
 }
 

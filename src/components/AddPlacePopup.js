@@ -12,10 +12,9 @@ function AddPlacePopup(props) {
             name: place,
             link: link,
         });
-        
+
         e.target.reset();
     }
-
 
     return (
         <PopupWithForm onSubmit={handleSubmit} name="add" title="Новое место"
@@ -23,11 +22,11 @@ function AddPlacePopup(props) {
             onClose={onClose}
         >
             <label className="form__field">
-                <input id="place-input" onChange={(e) => {setPlace(e.target.value)}} type="text" name="name" placeholder="Название" className="form__input form__input_type_place" required minLength="2" maxLength="30" />
+                <input id="place-input" onChange={(e) => { setPlace(e.target.value) }} type="text" name="name" placeholder="Название" className="form__input form__input_type_place" required minLength="2" maxLength="30" />
                 <span className="place-input-error form__input-error"></span>
             </label>
             <label className="form__field">
-                <input id="link-input" type="url" onChange={(e) => {setLink(e.target.value)}} name="link" placeholder="Ссылка на картинку" className="form__input form__input_type_link" required />
+                <input id="link-input" type="url" onChange={(e) => { setLink(e.target.value) }} name="link" placeholder="Ссылка на картинку" className="form__input form__input_type_link" required />
                 <span className="link-input-error form__input-error"></span>
             </label>
         </PopupWithForm>

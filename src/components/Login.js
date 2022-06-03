@@ -1,31 +1,14 @@
 import React from 'react';
 import Header from './Header';
-import { Link, useHistory } from 'react-router-dom';
-import * as Auth from '../utils/Auth.js';
-
+import { Link } from 'react-router-dom';
 
 function Login(props) {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const history = useHistory();
 
     function handleSubmit(e) {
         e.preventDefault();
-
-        Auth.authorize(password, email)
-            .then((data) => {
-                if (data.token) {
-                    setEmail('');
-                    setPassword('');
-                    props.handleLogin();
-                    history.push('/');
-                }
-
-                else {
-                    props.onFail(true);
-                }
-            })
-            .catch(err => console.log(err));
+        props.authorize(password, email);
     }
 
     return (

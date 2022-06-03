@@ -12,7 +12,38 @@ import unSuccess from '../images/unsuccess.svg';
 function App() {
   const [loggedIn, SetloggedIn] = React.useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  const [email, setEmail] = React.useState();
+  const [infoToolTip, setInfoToolTip] = React.useState({
+    src: unSuccess,
+    text: 'Что-то пошло не так! Попробуйте ещё раз.'});
   const history = useHistory();
+
+  function authorize(password, email) {
+    Auth.authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          setEmail(email);
+          handleLogin();
+          history.push('/');
+        } else {
+          handleInfoTooltip(true);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  function register(password, email) {
+    Auth.register(password, email)
+      .then(() => {
+        setInfoToolTip({
+          src: success,
+          text: 'Вы успешно зарегистрировались!'
+        });
+        handleInfoTooltip(true);
+        history.push('/sign-in');
+      })
+      .catch(err => console.log(err));
+  }
 
   function closeInfoTooltip() {
     setIsInfoTooltipOpen(false);
@@ -26,8 +57,8 @@ function App() {
   }
 
   function handleTokenCheck() {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
       Auth.checkToken(jwt)
         .then(() => {
           handleLogin();
@@ -40,28 +71,20 @@ function App() {
     handleTokenCheck();
   }, []);
 
-
   return (
     <>
       <Switch>
         <Route path="/sign-in">
-          <Login handleLogin={handleLogin} onFail={handleInfoTooltip} />
-          <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeInfoTooltip}>
-            <img src={unSuccess} className="form__infoTooltip" />
-            <h2 className="form__title form__title_type_infoTooltip">Что-то пошло не так! Попробуйте ещё раз.</h2>
-          </InfoTooltip>
+          <Login authorize={authorize} />
         </Route>
         <Route path="/sign-up">
-          <Register onSuccess={handleInfoTooltip} />
-          <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeInfoTooltip}>
-            <img src={success} className="form__infoTooltip" />
-            <h2 className="form__title form__title_type_infoTooltip">Вы успешно зарегистрировались!</h2>
-          </InfoTooltip>
+          <Register register={register} />
         </Route>
         <ProtectedRoute
-          path="/"
+          exact path="/"
           loggedIn={loggedIn}
           component={MyApp}
+          email={email}
         />
         <Route exact path="/">
           {loggedIn ?
@@ -69,8 +92,10 @@ function App() {
             <Redirect to="/sign-in" />}
         </Route>
       </Switch>
-
-
+      <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeInfoTooltip}>
+        <img src={infoToolTip.src} className="form__infoTooltip" />
+        <h2 className="form__title form__title_type_infoTooltip">{infoToolTip.text}</h2>
+      </InfoTooltip>
     </>
   );
 }
