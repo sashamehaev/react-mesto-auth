@@ -42,7 +42,7 @@ function App() {
         handleInfoTooltip(true);
         history.push('/sign-in');
       })
-      .catch(err => console.log(err));
+      .catch(() => handleInfoTooltip(true));
   }
 
   function closeInfoTooltip() {
@@ -60,10 +60,12 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       Auth.checkToken(jwt)
-        .then(() => {
+        .then((res) => {
+          setEmail(res.data.email);
           handleLogin();
           history.push('/');
-        });
+        })
+        .catch(err => console.log(err));
     }
   }
 

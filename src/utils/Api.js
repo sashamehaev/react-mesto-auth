@@ -9,7 +9,6 @@ class Api {
         if (res.ok) {
             return res.json();
         }
-
         return Promise.reject(`Ошибка: ${res.status}`);
     }
 
@@ -105,8 +104,6 @@ class Api {
 
     }
 
-
-
     setAvatar(url) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             method: 'PATCH',
@@ -118,9 +115,9 @@ class Api {
                 avatar: url
             })
         })
-            .then((res) => {
-                return this._getResponse(res);
-            });
+        .then((res) => {
+            return this._getResponse(res);
+        });
     }
 }
 

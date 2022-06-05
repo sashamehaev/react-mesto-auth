@@ -53,7 +53,10 @@ function MyApp(props) {
 
     function handleUpdateAvatar(avatar) {
         api.setAvatar(avatar)
-            .then((item) => setCurrentUser(item))
+            .then((item) => {
+                console.log(item);
+                setCurrentUser(item);
+            })
             .catch((err) => {
                 console.log(err);
             });
@@ -97,7 +100,7 @@ function MyApp(props) {
     }
 
     useEffect(() => {
-        if (localStorage.jwt) {
+        if (props.loggedIn) {
             api.getUserInfo()
                 .then((item) => {
                     setCurrentUser(item);
