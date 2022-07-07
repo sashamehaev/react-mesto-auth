@@ -95,7 +95,7 @@ function App() {
         </Route>
       </Switch>
       <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeInfoTooltip}>
-        <img src={infoToolTip.src} className="form__infoTooltip" />
+        <img alt="Статус авторизации" src={infoToolTip.src} className="form__infoTooltip" />
         <h2 className="form__title form__title_type_infoTooltip">{infoToolTip.text}</h2>
       </InfoTooltip>
     </>
