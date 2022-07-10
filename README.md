@@ -26,4 +26,4 @@
 * https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1
 
 **Страница gh-pages**
-* https://sashamehaev.github.io/mesto/index.html
+* https://sashamehaev.github.io/react-mesto-auth
