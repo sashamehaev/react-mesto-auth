@@ -7,15 +7,15 @@ import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import InfoTooltip from './InfoTooltip';
 import * as Auth from '../utils/Auth.js';
 import success from '../images/success.svg';
-import unSuccess from '../images/unsuccess.svg';
+import unsuccess from '../images/unsuccess.svg';
 
 function App() {
   const [loggedIn, SetloggedIn] = React.useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [email, setEmail] = React.useState();
   const [infoToolTip, setInfoToolTip] = React.useState({
-    src: unSuccess,
-    text: 'Что-то пошло не так! Попробуйте ещё раз.'});
+    src: '',
+    text: ''});
   const history = useHistory();
 
   function authorize(password, email) {
@@ -29,7 +29,14 @@ function App() {
           handleInfoTooltip(true);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        setInfoToolTip({
+          src: unsuccess,
+          text: 'Что-то пошло не так! Попробуйте ещё раз.'
+        });
+        handleInfoTooltip(true);
+        console.log(err);
+      });
   }
 
   function register(password, email) {
@@ -42,7 +49,13 @@ function App() {
         handleInfoTooltip(true);
         history.push('/sign-in');
       })
-      .catch(() => handleInfoTooltip(true));
+      .catch(() => {
+        setInfoToolTip({
+          src: unsuccess,
+          text: 'Что-то пошло не так! Попробуйте ещё раз.'
+        });
+        handleInfoTooltip(true);
+      });
   }
 
   function closeInfoTooltip() {
